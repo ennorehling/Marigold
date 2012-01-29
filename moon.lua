@@ -1,9 +1,12 @@
-local daisy = require('daisy')
+local SDL = require('daisy')
 local print = print
 module('moon')
+local screen
 
-local function video()
-    return nil
+local function video(w, h, options)
+    screen = SDL.Init(w, h, 32, options)
+    SDL.Flip(screen)
+    return screen
 end
 
 local shouldExit = false
@@ -23,6 +26,10 @@ hook = {
 }
 
 local function pump(time)
+    local event, args = SDL.PollEvent()
+    print(SDL.GetTicks())
+    if event==12 then shouldExit = true end
+    if event==2 or event==3 then print(args.sym, args.mod) end
 end
 
 local function run()
@@ -34,16 +41,16 @@ local function run()
         pump(0.1)
         if frameUpdate~=nil then frameUpdate(0.1) end
         if frameRender~=nil then frameRender() end
+        SDL.FillRect(screen, 40, 40, 40, 40, 0xFF00FF)
+        SDL.Flip(screen)
     end
 end
 
 function init(x, y, options)
-    local screen = daisy.init(x, y, 32, options)
-    print(screen)
     return {
         video = video(x, y, 32, options),
         run = run,
         exitGame = function() shouldExit = true end,
-        setWindowTitle = function(title) daisy.setWindowTitle(title) end
+        setWindowTitle = function(title) SDL.WM_SetCaption(title, title) end
     }
 end

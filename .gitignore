@@ -3,3 +3,4 @@ daisy/Debug/
 *.sdf
 daisy/ipch/
 *.suo
+daisy/Release/
