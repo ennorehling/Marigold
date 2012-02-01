@@ -32,6 +32,7 @@ local function pump(time)
     if event==2 or event==3 then print(args.sym, args.mod) end
 end
 
+local x = 0
 local function run()
     local gameInit = hook.get('gameInit')
     local frameRender = hook.get('frameRender')
@@ -39,9 +40,10 @@ local function run()
     if gameInit~=nil then gameInit() end
     while not shouldExit do
         pump(0.1)
+        x=x+1
         if frameUpdate~=nil then frameUpdate(0.1) end
         if frameRender~=nil then frameRender() end
-        SDL.FillRect(screen, 40, 40, 40, 40, 0xFF00FF)
+        SDL.FillRect(screen, x*40, 40+x, 40, 40, 0xFF00FF)
         SDL.Flip(screen)
     end
 end
