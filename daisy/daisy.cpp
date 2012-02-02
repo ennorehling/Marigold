@@ -26,13 +26,19 @@ static int daisy_WM_SetCaption (lua_State *L) {
 }
 
 static int daisy_Init (lua_State *L) {
+  int result = SDL_Init(SDL_INIT_EVERYTHING);
+  lua_pushinteger(L, result);
+  return 1;
+}
+
+static int daisy_SetVideoMode (lua_State *L) {
   int width = (int)luaL_checknumber(L, 1);
   int height = (int)luaL_checknumber(L, 2);
   int depth = (int)luaL_checknumber(L, 3);
   int flags = SDL_HWSURFACE;
      
   /* Initialize SDL */
-  SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(SDL_INIT_EVERYTHING);
   atexit(SDL_Quit);
      
   /* Initialize the screen / window */
@@ -174,9 +180,10 @@ static Uint32 daisy_timer(Uint32 interval, void *param)
   struct timer_param * p = (struct timer_param *)param;
   lua_State * L = p->L;
   lua_rawgeti(L, LUA_REGISTRYINDEX, p->callback);
+  lua_pushinteger(L, (lua_Integer)interval);
   lua_rawgeti(L, LUA_REGISTRYINDEX, p->param);
   Uint32 result = 0;
-  if (lua_pcall(L, 1, 1, 0)==0) {
+  if (lua_pcall(L, 2, 1, 0)==0) {
     result = (Uint32)luaL_checkinteger(L, 1);
   } else {
     // error handling here!
@@ -207,6 +214,7 @@ static int daisy_AddTimer(lua_State * L)
 int LUA_API luaopen_daisy (lua_State *L) {
   struct luaL_reg driver[] = {
     {"Init", daisy_Init},
+    {"SetVideoMode", daisy_SetVideoMode},
     {"WM_SetCaption", daisy_WM_SetCaption},
     {"WaitEvent", daisy_WaitEvent},
     {"PollEvent", daisy_PollEvent},

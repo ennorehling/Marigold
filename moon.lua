@@ -4,7 +4,8 @@ module('moon')
 local screen
 
 local function video(w, h, options)
-    screen = SDL.Init(w, h, 32, options)
+    SDL.Init()
+    screen = SDL.SetVideoMode(w, h, 32, options)
     SDL.Flip(screen)
     return screen
 end
@@ -33,6 +34,7 @@ local function pump(time)
 end
 
 local x = 0
+local y = 0
 local function run()
     local gameInit = hook.get('gameInit')
     local frameRender = hook.get('frameRender')
@@ -40,11 +42,15 @@ local function run()
     if gameInit~=nil then gameInit() end
     while not shouldExit do
         pump(0.1)
-        x=x+1
         if frameUpdate~=nil then frameUpdate(0.1) end
         if frameRender~=nil then frameRender() end
-        SDL.FillRect(screen, x*40, 40+x, 40, 40, 0xFF00FF)
+        SDL.FillRect(screen, x*40, 40*y, 39, 39, 0xFF00FF)
         SDL.Flip(screen)
+        x=x+1
+        if x >= 16 then
+            x = 0
+            y = y + 1
+        end
     end
 end
 
