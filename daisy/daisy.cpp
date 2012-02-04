@@ -19,33 +19,57 @@ extern "C" {
   int LUA_API luaopen_daisy (lua_State *L);
 }
 
+struct userdata {
+    SDL_Surface * screen;
+    SDL_sem * sem_fps;
+};
+
+static int daisy_Init (lua_State *L) {
+  int result = SDL_Init(SDL_INIT_EVERYTHING);
+  atexit(SDL_Quit);
+  if (result!=0) {
+      return 0;
+  }
+  userdata * udata = (userdata *)lua_newuserdata(L, sizeof(userdata));
+  memset(udata, 0, sizeof(udata));
+  return 1;
+}
+
+static Uint32 fps_timer(Uint32 interval, void *param)
+{
+    SDL_sem * sem = (SDL_sem *)param;
+    SDL_SemPost(sem);
+    return interval;
+}
+
+static int daisy_SetFrameDelay(lua_State * L)
+{
+    userdata * udata = (userdata *)lua_touserdata(L, 1);
+    Uint32 interval = (Uint32)luaL_checkinteger(L, 2);
+    SDL_NewTimerCallback callback = fps_timer;
+    udata->sem_fps = SDL_CreateSemaphore(0);
+    SDL_TimerID * result = (SDL_TimerID *)lua_newuserdata(L, sizeof(SDL_TimerID));
+    *result = SDL_AddTimer(interval, callback, udata->sem_fps);
+    return 1;
+}
+
 static int daisy_WM_SetCaption (lua_State *L) {
   const char * title = luaL_checkstring(L, 1);
   SDL_WM_SetCaption(title, title);
   return 0;
 }
 
-static int daisy_Init (lua_State *L) {
-  int result = SDL_Init(SDL_INIT_EVERYTHING);
-  lua_pushinteger(L, result);
-  return 1;
-}
-
 static int daisy_SetVideoMode (lua_State *L) {
-  int width = (int)luaL_checknumber(L, 1);
-  int height = (int)luaL_checknumber(L, 2);
-  int depth = (int)luaL_checknumber(L, 3);
-  int flags = SDL_HWSURFACE;
-     
-  /* Initialize SDL */
-  SDL_Init(SDL_INIT_EVERYTHING);
-  atexit(SDL_Quit);
-     
-  /* Initialize the screen / window */
-  
-  SDL_Surface ** screen = (SDL_Surface **)lua_newuserdata(L, sizeof(SDL_Surface *));
-  *screen = SDL_SetVideoMode(width, height, depth, flags);
-  return 1;
+    userdata * udata = (userdata *)lua_touserdata(L, 1);
+    int width = (int)luaL_checknumber(L, 2);
+    int height = (int)luaL_checknumber(L, 3);
+    int depth = (int)luaL_checknumber(L, 4);
+    int flags = SDL_HWSURFACE;
+
+    /* Initialize the screen / window */
+ 
+    udata->screen = SDL_SetVideoMode(width, height, depth, flags);
+    return 0;
 }
 
 static int PushEvent(lua_State * L, SDL_Event * event) {
@@ -109,24 +133,25 @@ static int daisy_GetTicks(lua_State * L)
 
 static int daisy_FillRect(lua_State * L)
 {
-    SDL_Surface ** data = (SDL_Surface **)lua_touserdata(L, 1); 
-    SDL_Surface * screen = *data;
+    userdata * udata = (userdata *)lua_touserdata(L, 1); 
     SDL_Rect rect;
     rect.x = (Sint16)luaL_checknumber(L, 2);
     rect.y = (Sint16)luaL_checknumber(L, 3);
     rect.w = (Sint16)luaL_checknumber(L, 4);
     rect.h = (Sint16)luaL_checknumber(L, 5);
     int color = (int)luaL_checknumber(L, 6);
-    Uint32 rgb = SDL_MapRGB(screen->format, (color>>16)&0xFF, (color>>8)&0xFF, color&0xFF);
-    SDL_FillRect(screen, &rect, rgb);
+    Uint32 rgb = SDL_MapRGB(udata->screen->format, (color>>16)&0xFF, (color>>8)&0xFF, color&0xFF);
+    SDL_FillRect(udata->screen, &rect, rgb);
     return 0;
 }
 
 static int daisy_Flip(lua_State * L)
 {
-    SDL_Surface ** data = (SDL_Surface **)lua_touserdata(L, 1); 
-    SDL_Surface * screen = *data;
-    SDL_Flip(screen);
+    userdata * udata = (userdata *)lua_touserdata(L, 1); 
+    if (udata->sem_fps) {
+        SDL_SemWait(udata->sem_fps);
+    }
+    SDL_Flip(udata->screen);
     return 0;
 }
 
@@ -169,48 +194,6 @@ static int daisy_SemPost(lua_State * L)
     return 1;
 }
 
-struct timer_param {
-  lua_State * L;
-  int param;
-  int callback;
-};
-
-static Uint32 daisy_timer(Uint32 interval, void *param)
-{
-  struct timer_param * p = (struct timer_param *)param;
-  lua_State * L = p->L;
-  lua_rawgeti(L, LUA_REGISTRYINDEX, p->callback);
-  lua_pushinteger(L, (lua_Integer)interval);
-  lua_rawgeti(L, LUA_REGISTRYINDEX, p->param);
-  Uint32 result = 0;
-  if (lua_pcall(L, 2, 1, 0)==0) {
-    result = (Uint32)luaL_checkinteger(L, 1);
-  } else {
-    // error handling here!
-    lua_pop(L, 1);
-  }
-  if (!result) {
-    luaL_unref(L, LUA_REGISTRYINDEX, p->callback);
-    luaL_unref(L, LUA_REGISTRYINDEX, p->param);
-  }
-  return result;
-}
-
-static int daisy_AddTimer(lua_State * L)
-{
-    Uint32 interval = (Uint32)luaL_checkinteger(L, 1);
-    if (lua_type(L, 2)!=LUA_TNIL) luaL_checktype(L, 2, LUA_TFUNCTION);
-    SDL_NewTimerCallback callback = daisy_timer;
-    struct timer_param *param = (struct timer_param *)malloc(sizeof(struct timer_param));
-    param->L = L;
-    param->param = luaL_ref(L, LUA_REGISTRYINDEX);
-    param->callback = luaL_ref(L, LUA_REGISTRYINDEX);
-
-    SDL_TimerID * result = (SDL_TimerID *)lua_newuserdata(L, sizeof(SDL_TimerID));
-    *result = SDL_AddTimer(interval, callback, param);
-    return 1;
-}
-
 int LUA_API luaopen_daisy (lua_State *L) {
   struct luaL_reg driver[] = {
     {"Init", daisy_Init},
@@ -221,14 +204,13 @@ int LUA_API luaopen_daisy (lua_State *L) {
     {"GetTicks", daisy_GetTicks},
     {"FillRect", daisy_FillRect},
     {"Flip", daisy_Flip},
+    {"SetFrameDelay", daisy_SetFrameDelay },
 
     {"CreateSemaphore", daisy_CreateSemaphore},
     {"DestroySemaphore", daisy_DestroySemaphore},
     {"SemWait", daisy_SemWait},
     {"SemTryWait", daisy_SemTryWait},
     {"SemPost", daisy_SemPost},
-
-    {"AddTimer", daisy_AddTimer},
 
     {NULL, NULL},
   };
