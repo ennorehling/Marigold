@@ -1,0 +1,31 @@
+
+$#include <SDL.h>
+$#include <SDL_types.h>
+
+typedef unsigned char	Uint8;
+typedef signed char	Sint8;
+typedef unsigned short	Uint16;
+typedef signed short	Sint16;
+typedef unsigned int	Uint32;
+typedef signed int	Sint32;
+
+
+#define SDL_TIMESLICE		10
+#define TIMER_RESOLUTION	10	/* Experimentally determined */
+Uint32 SDL_GetTicks(void);
+void SDL_Delay(Uint32 ms);
+int SDL_SetTimer(Uint32 interval, SDL_TimerCallback callback);
+SDL_TimerID SDL_AddTimer(Uint32 interval, SDL_NewTimerCallback callback, void *param);
+SDL_bool SDL_RemoveTimer(SDL_TimerID t);
+
+
+
+
+
+
+
+
+
+
+
+

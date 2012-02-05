@@ -1,0 +1,22 @@
+/* Basic data types */
+
+$#include <SDL.h>
+
+
+typedef unsigned char	Uint8;
+typedef signed char	Sint8;
+typedef unsigned short	Uint16;
+typedef signed short	Sint16;
+typedef unsigned int	Uint32;
+typedef signed int	Sint32;
+
+module image {
+
+
+SDL_Surface *IMG_LoadTyped_RW(SDL_RWops *src, int freesrc,
+					      char *type);
+SDL_Surface *IMG_Load(const char *file);
+SDL_Surface *IMG_Load_RW(SDL_RWops *src, int freesrc);
+int IMG_InvertAlpha(int on);
+
+}

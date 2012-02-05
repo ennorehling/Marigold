@@ -8,3 +8,4 @@ daisy/sandbox
 daisy/LuaSDL/Debug
 runner
 *.opensdf
+SDL/Debug
