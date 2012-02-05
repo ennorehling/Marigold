@@ -2,11 +2,21 @@ $#include <SDL.h>
 $#include "SDLX.h"
 
 module SDL {
+	struct SDL_Rect {
+		int x;
+		int y;
+		int w;
+		int h;
+	};
 	struct SDL_Surface {
 		tolua_outside SDL_Surface * SDL_DisplayFormat @ DisplayFormat();
+		tolua_outside int SDLX_FillRectA @ FillRect(int r[4], int);
 		tolua_outside int SDLX_FillRect @ FillRect(int, int, int, int, int);
+		tolua_outside int SDL_FillRect @ FillRect(SDL_Rect * rect, int color);
 	    tolua_outside int SDLX_Flip @ Flip();
+		tolua_outside int SDL_BlitSurface @ BlitSurface(SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect);
 	};
+	SDL_Rect * SDLX_CreateRect @ CreateRect(int, int, int, int);
 	int SDLX_SetFrameDelay @ SetFrameDelay(int);
 	int SDLX_Hello @ Hello(void);
 	int SDLX_Init @ Init(void);
