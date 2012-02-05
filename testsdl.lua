@@ -1,4 +1,4 @@
-require('LSDL')
+require('LuaSDL')
 
 SDL_BlitSurface = SDL_UpperBlit
 SDL_Init(SDL_INIT_EVERYTHING)
@@ -44,7 +44,7 @@ for y = 0,11 do
         SDL_FillRect(surface, stamp, color)
         target.x = x*40+20
         target.y = 40*y+20
-        SDL_FillRect(surface, target, color*256)
+        SDL_FillRect(surface, target, SDL_MapRGB(surface.format, 255, 0, 0))
     end
     if exit then break end
 
