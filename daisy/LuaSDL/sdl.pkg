@@ -1,0 +1,11 @@
+$#include <SDL.h>
+$#include "SDLX.h"
+
+module SDL {
+	struct SDLX {
+        tolua_outside int SDLX_Flip @ Flip();
+        tolua_outside int SDLX_SetVideoMode @ SetVideoMode(int, int, int, int);
+	};
+	int SDLX_Hello @ Hello(void);
+	SDLX * SDLX_Init @ Init(void);
+};

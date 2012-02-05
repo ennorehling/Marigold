@@ -4,3 +4,6 @@ daisy/Debug/
 daisy/ipch/
 *.suo
 daisy/Release/
+daisy/sandbox
+daisy/LuaSDL/Debug
+runner
