@@ -5,7 +5,11 @@ module SDL {
 	struct SDLX {
         tolua_outside int SDLX_Flip @ Flip();
         tolua_outside int SDLX_SetVideoMode @ SetVideoMode(int, int, int, int);
+		tolua_outside int SDLX_SetFrameDelay @ SetFrameDelay(int);
+		tolua_outside int SDLX_FillRect @ FillRect(int, int, int, int, int);
 	};
 	int SDLX_Hello @ Hello(void);
 	SDLX * SDLX_Init @ Init(void);
+	void SDL_WM_SetCaption @ WM_SetCaption(const char *title, const char *icon);
+	int SDL_GetTicks @ GetTicks(void);
 };
