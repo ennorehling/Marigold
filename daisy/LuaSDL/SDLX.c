@@ -46,13 +46,8 @@ int SDLX_SetFrameDelay(int interval)
     return fps_timer?0:-1;
 }
 
-int SDLX_FillRectA(struct SDL_Surface * screen, int r[4], int color) {
-    return SDLX_FillRect(screen, r[0], r[1], r[2], r[3], color);
-}
-
-int SDLX_FillRect(struct SDL_Surface * screen, int x, int y, int w, int h, int color)
-{
-    SDL_Rect rect = { x, y, w, h };
+int SDLX_FillRect(struct SDL_Surface * screen, int r[4], int color) {
+    SDL_Rect rect = { r[0], r[1], r[2], r[3] };
     Uint32 rgb = SDL_MapRGB(screen->format, (color>>16)&0xFF, (color>>8)&0xFF, color&0xFF);
     return SDL_FillRect(screen, &rect, rgb);
 }

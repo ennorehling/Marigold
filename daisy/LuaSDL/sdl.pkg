@@ -10,8 +10,7 @@ module SDL {
 	};
 	struct SDL_Surface {
 		tolua_outside SDL_Surface * SDL_DisplayFormat @ DisplayFormat();
-		tolua_outside int SDLX_FillRectA @ FillRect(int r[4], int);
-		tolua_outside int SDLX_FillRect @ FillRect(int, int, int, int, int);
+		tolua_outside int SDLX_FillRect @ FillRect(int r[4], int);
 		tolua_outside int SDL_FillRect @ FillRect(SDL_Rect * rect, int color);
 	    tolua_outside int SDLX_Flip @ Flip();
 		tolua_outside int SDL_BlitSurface @ BlitSurface(SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect);
