@@ -6,13 +6,14 @@
 extern "C" {
 #endif
 
-typedef struct SDLX SDLX;
+struct SDL_Surface;
+
 int SDLX_Hello(void);
-SDLX * SDLX_Init(void);
-int SDLX_Flip(SDLX * sdl);
-int SDLX_SetVideoMode(struct SDLX * sdl, int w, int h, int bpp, int flags);
-int SDLX_SetFrameDelay(struct SDLX * sdl, int ms);
-int SDLX_FillRect(struct SDLX * sdl, int x, int y, int w, int h, int color);
+int SDLX_Init(void);
+int SDLX_Flip(struct SDL_Surface * screen);
+struct SDL_Surface * SDLX_SetVideoMode(int w, int h, int bpp, int flags);
+int SDLX_SetFrameDelay(int interval);
+int SDLX_FillRect(struct SDL_Surface *, int x, int y, int w, int h, int color);
 #ifdef __cplusplus
 }
 #endif

@@ -1,24 +1,21 @@
 require('LuaSDL')
 
-sdl = SDL.Init()
+SDL.Init()
 SDL.WM_SetCaption("My First Game", "An Icon Title")
-print(sdl)
 local w = 640
 local h = 480
 
-sdl:SetVideoMode(w, h, 32, 0)
-sdl:Flip()
---[[
-sdl:SetFrameDelay(20) -- 5 fps
-]]-- broken
+local screen = SDL.SetVideoMode(w, h, 32, 0)
+SDL.SetFrameDelay(10) -- 5 fps
+screen:Flip()
 
 print(SDL.GetTicks())
 local exit = false
-for x = 1,10 do
+for x = 0,16 do
     if exit then break end
-    for y = 1,10 do
-        local event
+    for y = 0,11 do
 --[[
+        local event
         repeat
             local args
             event, args = SDL.PollEvent()
@@ -28,8 +25,9 @@ for x = 1,10 do
         until exit or event==nil
 ]]--
         if exit then break end
-        sdl:FillRect(x*40, 40*y, 39, 39, 0xFF00FF)
-        sdl:Flip()
+        color = x * 256 * 16 + y*16
+        screen:FillRect(x*40, 40*y, 39, 39, color)
+        screen:Flip()
         print(SDL.GetTicks())
     end
 end
