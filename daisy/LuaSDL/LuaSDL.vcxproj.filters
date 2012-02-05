@@ -32,14 +32,42 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sdl.c">
+    <ClCompile Include="SDLX.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SDLX.c">
+    <ClCompile Include="SDL_event_wr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_image_wr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_keyboard_wr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_timer_wr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_video_wr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_wr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="sdl.pkg" />
+    <CustomBuild Include="SDL_video_wr.pkg" />
+    <CustomBuild Include="SDL_timer_wr.pkg" />
+    <CustomBuild Include="SDL_keyboard_wr.pkg" />
+    <CustomBuild Include="SDL_image_wr.pkg" />
+    <CustomBuild Include="SDL_wr.pkg" />
+    <CustomBuild Include="SDL_event_wr.pkg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="event_helper.inc">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="video_helper.inc">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -5,8 +5,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "daisy", "daisy.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaSDL", "LuaSDL\LuaSDL.vcxproj", "{6CE5BC87-47F5-4D54-983C-7B3819065F61}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL", "..\SDL\SDL.vcxproj", "{ACD11894-D6BC-42E5-87CD-B4BFC3E90DA2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,10 +19,6 @@ Global
 		{6CE5BC87-47F5-4D54-983C-7B3819065F61}.Debug|Win32.Build.0 = Debug|Win32
 		{6CE5BC87-47F5-4D54-983C-7B3819065F61}.Release|Win32.ActiveCfg = Release|Win32
 		{6CE5BC87-47F5-4D54-983C-7B3819065F61}.Release|Win32.Build.0 = Release|Win32
-		{ACD11894-D6BC-42E5-87CD-B4BFC3E90DA2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{ACD11894-D6BC-42E5-87CD-B4BFC3E90DA2}.Debug|Win32.Build.0 = Debug|Win32
-		{ACD11894-D6BC-42E5-87CD-B4BFC3E90DA2}.Release|Win32.ActiveCfg = Release|Win32
-		{ACD11894-D6BC-42E5-87CD-B4BFC3E90DA2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
