@@ -7,3 +7,4 @@ daisy/Release/
 daisy/sandbox
 daisy/LuaSDL/Debug
 runner
+*.opensdf

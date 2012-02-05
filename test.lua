@@ -26,10 +26,9 @@ for y = 0,11 do
         until exit or event==nil
 ]]--
         if exit then break end
-        color = x * 256 * 256 * 16 + y*16
+        color = x * 256 * 16 + y*16
         surface:FillRect({x*40, 40*y, 39, 39}, color)
-        -- surface:FillRect(SDL.CreateRect(x*40, 40*y, 39, 39), color)
-        -- surface:FillRect(x*40, 40*y, 39, 39, color)
+        surface:FillRect(SDL.CreateRect(x*40+20, 40*y+20, 39, 39), color*256)
     end
     surface:BlitSurface(rect, screen, rect)
     screen:Flip()
