@@ -21,7 +21,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SDLX.h">
+    <ClInclude Include="event_helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="video_helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -30,9 +33,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SDLX.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SDL_event_wr.c">
@@ -53,6 +53,12 @@
     <ClCompile Include="SDL_wr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="event_helper.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="video_helper.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="SDL_video_wr.pkg" />
@@ -61,13 +67,5 @@
     <CustomBuild Include="SDL_image_wr.pkg" />
     <CustomBuild Include="SDL_wr.pkg" />
     <CustomBuild Include="SDL_event_wr.pkg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="event_helper.inc">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="video_helper.inc">
-      <Filter>Header Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

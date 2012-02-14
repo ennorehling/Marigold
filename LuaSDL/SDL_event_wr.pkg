@@ -176,6 +176,6 @@ int SDL_WaitEvent(SDL_Event *event);
 
 /* helpers */
 
-SDL_Event* SDL_CreateEvent() ;
+$#include "event_helper.h"
 
-$#include "event_helper.inc"
+SDL_Event* SDL_CreateEvent() ;

@@ -35,15 +35,26 @@ end
 
 local x = 0
 local y = 0
+local fps_lock
+
+local function fps_callback(interval, sem)
+    SDL.SemPost(sem)
+    return interval
+end
+
 local function run()
     local gameInit = hook.get('gameInit')
     local frameRender = hook.get('frameRender')
     local frameUpdate = hook.get('frameUpdate')
     if gameInit~=nil then gameInit() end
+    
+    local sem = SDL.CreateSemaphore(0)
+    SDL.AddTimer(200, fps_callback, sem)
     while not shouldExit do
         pump(0.1)
         if frameUpdate~=nil then frameUpdate(0.1) end
         if frameRender~=nil then frameRender() end
+        SDL.SemWait(sem)
         SDL.FillRect(screen, x*40, 40*y, 39, 39, 0xFF00FF)
         SDL.Flip(screen)
         x=x+1

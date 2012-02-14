@@ -196,10 +196,9 @@ extern SDL_GrabMode SDL_WM_GrabInput(SDL_GrabMode mode);
 
 /* helpers */
 
+$#include "video_helper.h"
+
 SDL_Rect* SDL_CreateRect() ;
 
 int SDL_FPS_SetDelay(int interval);
 int SDL_FPS_Wait(void);
-
-$#include "video_helper.inc"
-

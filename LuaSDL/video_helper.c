@@ -1,10 +1,12 @@
+#include <SDL.h>
+#include "video_helper.h"
+
 static SDL_sem * fps_sem = 0;
 static SDL_TimerID fps_timer = 0;
 
 /* creators */
 
-SDL_Rect* 
-SDL_CreateRect() 
+SDL_Rect* SDL_CreateRect() 
 {
   SDL_Rect* r = (SDL_Rect *)malloc(sizeof(SDL_Rect));
   return r;

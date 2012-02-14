@@ -1,4 +1,5 @@
-
+#include <SDL.h>
+#include "event_helper.h"
 
 SDL_Event* SDL_CreateEvent() 
 {
