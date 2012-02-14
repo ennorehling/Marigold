@@ -230,4 +230,6 @@ local function mainRender()
 	
 end
 hook.add("frameRender", mainRender)
+
+video.init(800, 600, false)
 daisy.main()

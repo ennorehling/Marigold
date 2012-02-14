@@ -1,3 +1,4 @@
 @ECHO OFF
 SET LUA_CPATH=Debug\?.dll
-lua testsdl.lua
+SET LUA_PATH=?\init.lua;?.lua
+lua simplebreak.lua
