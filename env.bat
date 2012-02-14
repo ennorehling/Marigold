@@ -5,4 +5,4 @@ GOTO FINISH
 :DEFAULT
 SET LUA_CPATH=Debug\?.dll
 :FINISH
-REM DONE
+SET LUA_PATH=?\init.lua;?.lua
