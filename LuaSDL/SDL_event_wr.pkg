@@ -174,12 +174,8 @@ int SDL_PollEvent(SDL_Event *event);
 int SDL_WaitEvent(SDL_Event *event);
 
 
+/* helpers */
 
-
-
-
-/* kreator include */
-
-SDL_Event*  createEvent() ;
+SDL_Event* SDL_CreateEvent() ;
 
 $#include "event_helper.inc"

@@ -1,2 +1,2 @@
 @ECHO OFF
-SET LUA_CPATH=daisy\debug\?.dll
+SET LUA_CPATH=Debug\?.dll

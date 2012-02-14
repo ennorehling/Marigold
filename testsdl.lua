@@ -1,11 +1,16 @@
 require('LuaSDL')
 
+function SDL_FlipEx(screen)
+	SDL_FPS_Wait()
+	return SDL_Flip(screen)
+end
+
 SDL_BlitSurface = SDL_UpperBlit
 SDL_Init(SDL_INIT_EVERYTHING)
 SDL_WM_SetCaption("My First Game", "An Icon Title")
 local w = 640
 local h = 480
-local rect = createRect()
+local rect = SDL_CreateRect()
 rect.x = 0
 rect.y = 0
 rect.w = w
@@ -13,18 +18,18 @@ rect.h = h
 local fullscreen = 0x80000000
 local screen = SDL_SetVideoMode(w, h, 32, 0)
 surface = SDL_DisplayFormat(screen)
--- SDL_SetFrameDelay(100)
+SDL_FPS_SetDelay(100) -- 100ms = 10 FPS
 SDL_FillRect(screen, nil, 0xFF0070)
-SDL_Flip(screen)
+SDL_FlipEx(screen)
 print(SDL_GetTicks())
 local exit = false
-local stamp = createRect()
+local stamp = SDL_CreateRect()
 stamp.w = 39
 stamp.h = 39
-local target = createRect()
+local target = SDL_CreateRect()
 target.w = 39
 target.h = 39
-local event = createEvent()
+local event = SDL_CreateEvent()
 
 for y = 0,11 do
     for x = 0,15 do
@@ -49,13 +54,13 @@ for y = 0,11 do
     if exit then break end
 
     SDL_BlitSurface(surface, nil, screen, nil)
-    SDL_Flip(screen)
+    SDL_FlipEx(screen)
     print(SDL_GetTicks())
 end
 
 repeat
     SDL_WaitEvent(event)
-    SDL_Flip(screen)
+    SDL_FlipEx(screen)
     if event.type==12 then
         exit=true
     end

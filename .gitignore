@@ -9,3 +9,4 @@ daisy/LuaSDL/Debug
 runner
 *.opensdf
 SDL/Debug
+Debug/
