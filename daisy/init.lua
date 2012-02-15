@@ -8,7 +8,6 @@ require('daisy.audio')
 --local SDL_PollEvent = SDL_PollEvent
 local hook = hook
 local video = video
-local print = print
 
 module('daisy', package.seeall) -- TODO: do not use this
 
@@ -25,13 +24,12 @@ function main()
     video._open()
     if gameInit~=nil then gameInit() end
     local endGame = false
+    local lastTime = SDL_GetTicks()
     repeat
         while SDL_PollEvent(event)~=0 do
-            print(event.type, SDL_QUIT, SDL_MOUSEMOTION)
             if event.type==SDL_MOUSEMOTION then
                 mouseX = event.motion.x
                 mouseY = event.motion.y
-                print(mouseX, mouseY)
             elseif event.type==SDL_MOUSEBUTTONUP then
                 buttons[0] = false
                 break
@@ -43,8 +41,11 @@ function main()
                 break
             end
         end
-        local time = SDL_GetTicks()/1000
-        if frameUpdate~=nil then frameUpdate(time) end
+        if frameUpdate~=nil then
+            local timeNow = SDL_GetTicks()
+            frameUpdate((timeNow-lastTime)/1000)
+            lastTime = timeNow
+        end
         if frameRender~=nil then frameRender() end
         video._flip()
 --        endGame = true
