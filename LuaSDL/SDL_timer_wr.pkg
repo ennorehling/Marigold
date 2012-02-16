@@ -17,15 +17,3 @@ void SDL_Delay(Uint32 ms);
 int SDL_SetTimer(Uint32 interval, SDL_TimerCallback callback);
 SDL_TimerID SDL_AddTimer(Uint32 interval, SDL_NewTimerCallback callback, void *param);
 SDL_bool SDL_RemoveTimer(SDL_TimerID t);
-
-
-
-
-
-
-
-
-
-
-
-

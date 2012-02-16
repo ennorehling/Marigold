@@ -36,7 +36,30 @@ function renderRectangle(x, y, w, h, a, r, g, b)
 end
 
 function renderText(str, x, y, alignment, font, a, r, g, b)
-   print(str)
+    -- TODO: this is a fake
+    local xx = x
+    alignment = alignment or 0
+    a = a or 128
+    r = r or 255
+    g = g or 255
+    b = b or 255
+    if alignment==1 then
+        xx = xx - string.len(str) * 4
+    end
+    for i = 1, string.len(str) do
+        renderRectangle(xx, y, 7, 7, a, r, g, b)
+        if alignment==2 then
+            xx = xx - 8
+        else
+            xx = xx + 8
+        end
+    end
+    -- print('renderText', str)
+end
+
+function getTextSize(str, font)
+    -- TODO: this is a fake
+    return 8*string.len(str), 8
 end
 
 function _flip()

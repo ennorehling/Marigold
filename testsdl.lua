@@ -58,6 +58,10 @@ for y = 0,11 do
     print(SDL_GetTicks())
 end
 
+local font = SDL_LoadBMP("daisymoon/04b08.bmp")
+SDL_BlitSurface(font, nil, screen, nil)
+SDL_Flip(screen)
+
 repeat
     SDL_WaitEvent(event)
     SDL_FlipEx(screen)
