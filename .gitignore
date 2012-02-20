@@ -6,3 +6,6 @@ runner/
 Debug/
 LuaSDL/SD*_wr.c
 ipch/
+
+android-project/bin/
+android-project/obj/
