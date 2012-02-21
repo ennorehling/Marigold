@@ -1,0 +1,37 @@
+$#include <SDL.h>
+$#include <SDL_types.h>
+$#include <SDL_audio.h>
+
+typedef unsigned char	Uint8;
+typedef signed char	Sint8;
+typedef unsigned short	Uint16;
+typedef signed short	Sint16;
+typedef unsigned int	Uint32;
+typedef signed int	Sint32;
+typedef int SDL_bool;
+
+/* helpers */
+
+typedef struct {
+	int freq;		/**< DSP frequency -- samples per second */
+	Uint16 format;		/**< Audio data format */
+	Uint8  channels;	/**< Number of channels: 1 mono, 2 stereo */
+	Uint8  silence;		/**< Audio buffer silence value (calculated) */
+	Uint16 samples;		/**< Audio buffer size in samples (power of 2) */
+	Uint16 padding;		/**< Necessary for some compile environments */
+	Uint32 size;		/**< Audio buffer size in bytes (calculated) */
+} SDL_AudioSpec;
+
+typedef enum {
+  SDL_AUDIO_STOPPED = 0,
+  SDL_AUDIO_PLAYING,
+  SDL_AUDIO_PAUSED
+} SDL_AudioStatus;
+
+int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained);
+void SDL_PauseAudio(int pause_on);
+SDL_AudioStatus SDL_GetAudioStatus(void);
+/* buffer data?
+SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+void SDL_FreeWAV(Uint8 *audio_buf);
+*/

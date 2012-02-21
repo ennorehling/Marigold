@@ -24,9 +24,6 @@
     <ClInclude Include="video_helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="audio_helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -51,9 +48,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="event_helper.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="audio_helper.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SDL_audio_wr.c">
