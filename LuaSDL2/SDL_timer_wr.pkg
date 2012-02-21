@@ -1,0 +1,25 @@
+
+$#include <SDL.h>
+$#include <SDL_types.h>
+
+typedef unsigned char	Uint8;
+typedef signed char	Sint8;
+typedef unsigned short	Uint16;
+typedef signed short	Sint16;
+typedef unsigned int	Uint32;
+typedef signed int	Sint32;
+typedef int SDL_bool;
+
+extern Uint32 SDL_GetTicks(void);
+extern void SDL_Delay(Uint32 ms);
+
+/** TODO: Uint64 is not supported by lua 
+extern Uint64 SDL_GetPerformanceCounter(void);
+extern Uint64 SDL_GetPerformanceFrequency(void);
+*/
+
+/** TODO: effing callbacks
+typedef int SDL_TimerID;
+extern SDL_TimerID SDL_AddTimer(Uint32 interval, SDL_TimerCallback callback, void *param);
+extern SDL_bool SDL_RemoveTimer(SDL_TimerID id);
+*/

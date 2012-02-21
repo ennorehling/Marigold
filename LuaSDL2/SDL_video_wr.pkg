@@ -1,0 +1,222 @@
+$#include <SDL.h>
+
+typedef unsigned char	Uint8;
+typedef signed char	Sint8;
+typedef unsigned short	Uint16;
+typedef signed short	Sint16;
+typedef unsigned int	Uint32;
+typedef signed int	Sint32;
+typedef int SDL_bool;
+
+#define SDL_ALPHA_OPAQUE 255
+#define SDL_ALPHA_TRANSPARENT 0
+
+typedef struct {
+	Sint16 x;
+	Sint16 y;
+	Uint16 w;
+	Uint16 h;
+} SDL_Rect;
+
+typedef struct
+{
+    Uint32 format;              /**< pixel format */
+    int w;                      /**< width */
+    int h;                      /**< height */
+    int refresh_rate;           /**< refresh rate (or zero for unspecified) */
+    void *driverdata;           /**< driver-specific data, initialize to 0 */
+} SDL_DisplayMode;
+
+struct SDL_Window;
+
+/**
+ *  \brief The flags on a window
+ *  
+ *  \sa SDL_GetWindowFlags()
+ */
+typedef enum
+{
+    SDL_WINDOW_FULLSCREEN = 0x00000001,         /**< fullscreen window */
+    SDL_WINDOW_OPENGL = 0x00000002,             /**< window usable with OpenGL context */
+    SDL_WINDOW_SHOWN = 0x00000004,              /**< window is visible */
+    SDL_WINDOW_HIDDEN = 0x00000008,             /**< window is not visible */
+    SDL_WINDOW_BORDERLESS = 0x00000010,         /**< no window decoration */
+    SDL_WINDOW_RESIZABLE = 0x00000020,          /**< window can be resized */
+    SDL_WINDOW_MINIMIZED = 0x00000040,          /**< window is minimized */
+    SDL_WINDOW_MAXIMIZED = 0x00000080,          /**< window is maximized */
+    SDL_WINDOW_INPUT_GRABBED = 0x00000100,      /**< window has grabbed input focus */
+    SDL_WINDOW_INPUT_FOCUS = 0x00000200,        /**< window has input focus */
+    SDL_WINDOW_MOUSE_FOCUS = 0x00000400,        /**< window has mouse focus */
+    SDL_WINDOW_FOREIGN = 0x00000800             /**< window not created by SDL */
+} SDL_WindowFlags;
+
+/**
+ *  \brief Used to indicate that you don't care what the window position is.
+ */
+#define SDL_WINDOWPOS_UNDEFINED_MASK    0x1FFF0000
+extern Uint32 SDL_WINDOWPOS_UNDEFINED_DISPLAY(Uint32 X);
+#define SDL_WINDOWPOS_UNDEFINED         SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)
+extern Uint32 SDL_WINDOWPOS_ISUNDEFINED(Uint32 X);
+
+/**
+ *  \brief Used to indicate that the window position should be centered.
+ */
+#define SDL_WINDOWPOS_CENTERED_MASK    0x2FFF0000
+extern Uint32 SDL_WINDOWPOS_CENTERED_DISPLAY(Uint32 X);
+#define SDL_WINDOWPOS_CENTERED         SDL_WINDOWPOS_CENTERED_DISPLAY(0)
+extern Uint32 SDL_WINDOWPOS_ISCENTERED(Uint32 X);
+
+/**
+ *  \brief Event subtype for window events
+ */
+typedef enum
+{
+    SDL_WINDOWEVENT_NONE,           /**< Never used */
+    SDL_WINDOWEVENT_SHOWN,          /**< Window has been shown */
+    SDL_WINDOWEVENT_HIDDEN,         /**< Window has been hidden */
+    SDL_WINDOWEVENT_EXPOSED,        /**< Window has been exposed and should be 
+                                         redrawn */
+    SDL_WINDOWEVENT_MOVED,          /**< Window has been moved to data1, data2 
+                                     */
+    SDL_WINDOWEVENT_RESIZED,        /**< Window has been resized to data1xdata2 */
+    SDL_WINDOWEVENT_SIZE_CHANGED,   /**< The window size has changed, either as a result of an API call or through the system or user changing the window size. */
+    SDL_WINDOWEVENT_MINIMIZED,      /**< Window has been minimized */
+    SDL_WINDOWEVENT_MAXIMIZED,      /**< Window has been maximized */
+    SDL_WINDOWEVENT_RESTORED,       /**< Window has been restored to normal size
+                                         and position */
+    SDL_WINDOWEVENT_ENTER,          /**< Window has gained mouse focus */
+    SDL_WINDOWEVENT_LEAVE,          /**< Window has lost mouse focus */
+    SDL_WINDOWEVENT_FOCUS_GAINED,   /**< Window has gained keyboard focus */
+    SDL_WINDOWEVENT_FOCUS_LOST,     /**< Window has lost keyboard focus */
+    SDL_WINDOWEVENT_CLOSE           /**< The window manager requests that the 
+                                         window be closed */
+} SDL_WindowEventID;
+
+/**
+ *  \brief An opaque handle to an OpenGL context.
+ */
+typedef void * SDL_GLContext;
+
+/**
+ *  \brief OpenGL configuration attributes
+ */
+typedef enum
+{
+    SDL_GL_RED_SIZE,
+    SDL_GL_GREEN_SIZE,
+    SDL_GL_BLUE_SIZE,
+    SDL_GL_ALPHA_SIZE,
+    SDL_GL_BUFFER_SIZE,
+    SDL_GL_DOUBLEBUFFER,
+    SDL_GL_DEPTH_SIZE,
+    SDL_GL_STENCIL_SIZE,
+    SDL_GL_ACCUM_RED_SIZE,
+    SDL_GL_ACCUM_GREEN_SIZE,
+    SDL_GL_ACCUM_BLUE_SIZE,
+    SDL_GL_ACCUM_ALPHA_SIZE,
+    SDL_GL_STEREO,
+    SDL_GL_MULTISAMPLEBUFFERS,
+    SDL_GL_MULTISAMPLESAMPLES,
+    SDL_GL_ACCELERATED_VISUAL,
+    SDL_GL_RETAINED_BACKING,
+    SDL_GL_CONTEXT_MAJOR_VERSION,
+    SDL_GL_CONTEXT_MINOR_VERSION
+} SDL_GLattr;
+
+
+extern int SDL_GetNumVideoDrivers(void);
+extern const char * SDL_GetVideoDriver(int index);
+extern int SDL_VideoInit(const char *driver_name);
+extern void SDL_VideoQuit(void);
+extern const char * SDL_GetCurrentVideoDriver(void);
+extern int SDL_GetNumVideoDisplays(void);
+extern int SDL_GetDisplayBounds(int displayIndex, SDL_Rect * rect);
+extern int SDL_GetNumDisplayModes(int displayIndex);
+extern int SDL_GetDisplayMode(int displayIndex, int modeIndex,
+                                               SDL_DisplayMode * mode);
+extern int SDL_GetDesktopDisplayMode(int displayIndex, SDL_DisplayMode * mode);
+extern int SDL_GetCurrentDisplayMode(int displayIndex, SDL_DisplayMode * mode);
+extern SDL_DisplayMode * SDL_GetClosestDisplayMode(int displayIndex, const SDL_DisplayMode * mode, SDL_DisplayMode * closest);
+extern int SDL_GetWindowDisplay(SDL_Window * window);
+extern int SDL_SetWindowDisplayMode(SDL_Window * window, const SDL_DisplayMode * mode);
+extern int SDL_GetWindowDisplayMode(SDL_Window * window,
+                                                     SDL_DisplayMode * mode);
+extern Uint32 SDL_GetWindowPixelFormat(SDL_Window * window);
+extern SDL_Window * SDL_CreateWindow(const char *title,
+                                                      int x, int y, int w,
+                                                      int h, Uint32 flags);
+extern SDL_Window * SDL_CreateWindowFrom(const void *data);
+extern Uint32 SDL_GetWindowID(SDL_Window * window);
+extern SDL_Window * SDL_GetWindowFromID(Uint32 id);
+extern Uint32 SDL_GetWindowFlags(SDL_Window * window);
+extern void SDL_SetWindowTitle(SDL_Window * window,
+                                                const char *title);
+extern const char * SDL_GetWindowTitle(SDL_Window * window);
+extern void SDL_SetWindowIcon(SDL_Window * window,
+                                               SDL_Surface * icon);
+extern void* SDL_SetWindowData(SDL_Window * window,
+                                                const char *name,
+                                                void *userdata);
+extern void * SDL_GetWindowData(SDL_Window * window,
+                                                const char *name);
+extern void SDL_SetWindowPosition(SDL_Window * window,
+                                                   int x, int y);
+extern void SDL_GetWindowPosition(SDL_Window * window,
+                                                   int *x, int *y);
+extern void SDL_SetWindowSize(SDL_Window * window, int w,
+                                               int h);
+extern void SDL_GetWindowSize(SDL_Window * window, int *w,
+                                               int *h);
+extern void SDL_ShowWindow(SDL_Window * window);
+extern void SDL_HideWindow(SDL_Window * window);
+extern void SDL_RaiseWindow(SDL_Window * window);
+extern void SDL_MaximizeWindow(SDL_Window * window);
+extern void SDL_MinimizeWindow(SDL_Window * window);
+extern void SDL_RestoreWindow(SDL_Window * window);
+extern int SDL_SetWindowFullscreen(SDL_Window * window,
+                                                    SDL_bool fullscreen);
+extern SDL_Surface * SDL_GetWindowSurface(SDL_Window * window);
+extern int SDL_UpdateWindowSurface(SDL_Window * window);
+extern int SDL_UpdateWindowSurfaceRects(SDL_Window * window,
+                                                         SDL_Rect * rects,
+                                                         int numrects);
+extern void SDL_SetWindowGrab(SDL_Window * window,
+                                               SDL_bool grabbed);
+extern SDL_bool SDL_GetWindowGrab(SDL_Window * window);
+extern int SDL_SetWindowBrightness(SDL_Window * window, float brightness);
+extern float SDL_GetWindowBrightness(SDL_Window * window);
+extern int SDL_SetWindowGammaRamp(SDL_Window * window,
+                                                   const Uint16 * red,
+                                                   const Uint16 * green,
+                                                   const Uint16 * blue);
+extern int SDL_GetWindowGammaRamp(SDL_Window * window,
+                                                   Uint16 * red,
+                                                   Uint16 * green,
+                                                   Uint16 * blue);
+extern void SDL_DestroyWindow(SDL_Window * window);
+extern SDL_bool SDL_IsScreenSaverEnabled(void);
+extern void SDL_EnableScreenSaver(void);
+extern void SDL_DisableScreenSaver(void);
+extern int SDL_GL_LoadLibrary(const char *path);
+extern void * SDL_GL_GetProcAddress(const char *proc);
+extern void SDL_GL_UnloadLibrary(void);
+extern SDL_bool SDL_GL_ExtensionSupported(const char
+                                                           *extension);
+extern int SDL_GL_SetAttribute(SDL_GLattr attr, int value);
+extern int SDL_GL_GetAttribute(SDL_GLattr attr, int *value);
+extern SDL_GLContext SDL_GL_CreateContext(SDL_Window * window);
+extern int SDL_GL_MakeCurrent(SDL_Window * window,
+                                               SDL_GLContext context);
+extern int SDL_GL_SetSwapInterval(int interval);
+extern int SDL_GL_GetSwapInterval(void);
+extern void SDL_GL_SwapWindow(SDL_Window * window);
+extern void SDL_GL_DeleteContext(SDL_GLContext context);
+/* helpers */
+
+$#include "video_helper.h"
+
+SDL_Rect* SDL_CreateRect() ;
+
+int SDL_FPS_SetDelay(int interval);
+int SDL_FPS_Wait(void);
+SDL_Surface * SDL_LoadBMP(const char * filename);
