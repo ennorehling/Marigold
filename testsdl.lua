@@ -1,11 +1,13 @@
 require('LuaSDL')
 
 function SDL_FlipEx(screen)
-	SDL_FPS_Wait()
-	return SDL_Flip(screen)
+    SDL_FPS_Wait()
+    return SDL_Flip(screen)
 end
 
-SDL_BlitSurface = SDL_UpperBlit
+if SDL_BlitSurface==nil then
+    SDL_BlitSurface = SDL_UpperBlit
+end
 SDL_Init(SDL_INIT_EVERYTHING)
 SDL_WM_SetCaption("My First Game", "An Icon Title")
 local w = 640
