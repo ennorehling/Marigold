@@ -8,8 +8,12 @@ static SDL_TimerID fps_timer = 0;
 
 SDL_Rect* SDL_CreateRect() 
 {
-  SDL_Rect* r = (SDL_Rect *)malloc(sizeof(SDL_Rect));
-  return r;
+  return (SDL_Rect*)calloc(1, sizeof(SDL_Rect));
+}
+
+SDL_DisplayMode* SDL_CreateDisplayMode()
+{
+    return (SDL_DisplayMode*)calloc(1, sizeof(SDL_DisplayMode));
 }
 
 static Uint32 fps_timer_cb(Uint32 interval, void *param)
