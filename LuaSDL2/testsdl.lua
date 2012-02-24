@@ -16,6 +16,7 @@ rect.y = 0
 rect.w = w
 rect.h = h
 local fullscreen = 0x80000000
+
 local screen = SDL_SetVideoMode(w, h, 32, 0)
 surface = SDL_DisplayFormat(screen)
 SDL_FPS_SetDelay(100) -- 100ms = 10 FPS
