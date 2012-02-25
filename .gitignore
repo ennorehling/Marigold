@@ -11,3 +11,4 @@ ipch/
 android-project/bin/
 android-project/obj/
 android-project/libs/
+LuaSDL2/*.dll

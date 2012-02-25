@@ -56,6 +56,9 @@
     <ClCompile Include="SDL_surface_wr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SDL_render_wr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="SDL_video_wr.pkg" />
@@ -65,5 +68,6 @@
     <CustomBuild Include="SDL_event_wr.pkg" />
     <CustomBuild Include="SDL_audio_wr.pkg" />
     <CustomBuild Include="SDL_surface_wr.pkg" />
+    <CustomBuild Include="SDL_render_wr.pkg" />
   </ItemGroup>
 </Project>

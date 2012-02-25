@@ -10,6 +10,7 @@
 extern "C" {
     int tolua_SDL_wr_open(lua_State*);
     int tolua_SDL_surface_wr_open(lua_State*);
+    int tolua_SDL_render_wr_open(lua_State*);
     int tolua_SDL_video_wr_open(lua_State*);
     int tolua_SDL_timer_wr_open(lua_State*);
     int tolua_SDL_keyboard_wr_open(lua_State*);
@@ -18,6 +19,7 @@ extern "C" {
     int __declspec(dllexport) luaopen_LuaSDL2 (lua_State* L) {
         tolua_SDL_wr_open(L);
         tolua_SDL_surface_wr_open(L);
+        tolua_SDL_render_wr_open(L);
         tolua_SDL_video_wr_open(L);
         tolua_SDL_timer_wr_open(L);
         tolua_SDL_keyboard_wr_open(L);

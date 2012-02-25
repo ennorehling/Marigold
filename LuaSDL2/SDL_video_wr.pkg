@@ -11,6 +11,14 @@ typedef int SDL_bool;
 #define SDL_ALPHA_OPAQUE 255
 #define SDL_ALPHA_TRANSPARENT 0
 
+struct SDL_PixelFormat;
+
+extern Uint32 SDL_MapRGB(const SDL_PixelFormat * format, Uint8 r, Uint8 g, Uint8 b);
+extern Uint32 SDL_MapRGBA(const SDL_PixelFormat * format, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+extern void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormat * format, Uint8 * r, Uint8 * g, Uint8 * b);
+extern void SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormat * format, Uint8 * r, Uint8 * g, Uint8 * b, Uint8 * a);
+
+
 typedef struct {
 	Sint16 x;
 	Sint16 y;

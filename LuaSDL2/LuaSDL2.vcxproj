@@ -101,6 +101,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SDL_render_wr.c" />
     <ClCompile Include="SDL_surface_wr.c" />
     <ClCompile Include="SDL_timer_wr.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -186,6 +187,14 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">tolua++ -o %(Filename).c %(FullPath)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).c</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating %(Filename).c</Message>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SDL_render_wr.pkg">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">tolua -n %(Filename) -o %(Filename).c %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating %(Filename).c</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).c</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

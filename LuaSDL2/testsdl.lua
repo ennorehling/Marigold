@@ -1,13 +1,6 @@
 require('LuaSDL2')
-require('SDL_compat')
-
-function SDL_FlipEx(screen)
-    SDL_FPS_Wait()
-    return SDL_Flip(screen)
-end
 
 SDL_Init(SDL_INIT_EVERYTHING)
-SDL_WM_SetCaption("My First Game", "An Icon Title")
 local w = 640
 local h = 480
 local rect = SDL_CreateRect()
@@ -17,8 +10,24 @@ rect.w = w
 rect.h = h
 local fullscreen = 0x80000000
 
+--[[ 1.2 only
+SDL_WM_SetCaption("My First Game", "An Icon Title")
 local screen = SDL_SetVideoMode(w, h, 32, 0)
-surface = SDL_DisplayFormat(screen)
+local surface = SDL_DisplayFormat(screen)
+]]
+local window = SDL_CreateWindow("SDL 2.0 Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN)
+local screen = SDL_GetWindowSurface(window)
+local surface = SDL_ConvertSurface(screen, screen.format, SDL_RLEACCEL)
+local renderer = SDL_CreateRenderer(window, -1, 0)
+SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
+SDL_RenderClear(renderer)
+
+function SDL_FlipEx(screen)
+    SDL_FPS_Wait()
+    --[[ SDL 1.2 ]]-- return SDL_Flip(screen)
+    SDL_RenderPresent(renderer)
+end
+
 SDL_FPS_SetDelay(100) -- 100ms = 10 FPS
 SDL_FillRect(screen, nil, 0xFF0070)
 SDL_FlipEx(screen)
@@ -61,7 +70,7 @@ end
 
 local font = SDL_LoadBMP("daisymoon/04b08.bmp")
 SDL_BlitSurface(font, nil, screen, nil)
-SDL_Flip(screen)
+SDL_FlipEx(screen)
 
 repeat
     SDL_WaitEvent(event)
