@@ -13,6 +13,12 @@ typedef int SDL_bool;
 
 struct SDL_PixelFormat;
 
+#define SDL_PIXELFORMAT_INDEX8
+#define SDL_PIXELFORMAT_RGB555
+#define SDL_PIXELFORMAT_RGB565
+#define SDL_PIXELFORMAT_RGB24
+#define SDL_PIXELFORMAT_RGB888
+
 extern Uint32 SDL_MapRGB(const SDL_PixelFormat * format, Uint8 r, Uint8 g, Uint8 b);
 extern Uint32 SDL_MapRGBA(const SDL_PixelFormat * format, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 extern void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormat * format, Uint8 * r, Uint8 * g, Uint8 * b);
