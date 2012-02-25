@@ -6,8 +6,10 @@ window = SDL_CreateWindow("SDL_RenderClear",
                         512, 512,
                         SDL_WINDOW_SHOWN)
 renderer = SDL_CreateRenderer(window, -1, 0)
-SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
-SDL_RenderClear(renderer)
-SDL_RenderPresent(renderer)
-SDL_Delay(5000)
+for i = 0, 255 do
+    SDL_SetRenderDrawColor(renderer, i, 0, 0, 255)
+    SDL_RenderClear(renderer)
+    SDL_RenderPresent(renderer)
+    -- SDL_Delay(5)
+end
 SDL_Quit()
