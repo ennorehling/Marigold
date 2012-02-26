@@ -93,5 +93,13 @@ end
 
 function Event(state, event, onQuit)
     print(event.type)
+    if event.type==SDL_WINDOWEVENT then
+        --[[ if event.window.event==SDL_WINDOWEVENT_CLOSE then
+            local window = SDL_GetWindowFromID(event.window.windowID)
+            if window then
+                SDL_DestroyWindow(window)
+            end
+        end ]]
+    end
     if event.type==SDL_QUIT then onQuit() end
 end
