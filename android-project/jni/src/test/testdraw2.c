@@ -30,6 +30,28 @@ static int current_color = 255;
 static SDL_BlendMode blendMode = SDL_BLENDMODE_NONE;
 
 void
+DrawSprites(SDL_Renderer * renderer)
+{
+    static SDL_Surface * bmp_pave;
+    static SDL_Texture * tex_pave;
+    if (!bmp_pave) {
+        const char * filename = "pave.bmp";
+        bmp_pave = SDL_LoadBMP(filename);
+        if (!bmp_pave) {
+            SDL_Log("SDL_LoadBMP(%s) failed: %s", filename, SDL_GetError());
+            return;
+        }
+        tex_pave = SDL_CreateTextureFromSurface(renderer, bmp_pave);
+        SDL_FreeSurface(bmp_pave);
+    }
+    if (tex_pave) {
+        SDL_Rect src = { 1, 1, 40, 40 };
+        SDL_Rect dst = { 40, 40, 40, 40 };
+        SDL_RenderCopy(renderer, tex_pave, &src, &dst);
+    }
+}
+
+void
 DrawPoints(SDL_Renderer * renderer)
 {
     int i;
@@ -257,6 +279,7 @@ main(int argc, char *argv[])
             DrawRects(renderer);
             DrawLines(renderer);
             DrawPoints(renderer);
+            DrawSprites(renderer);
 
             SDL_RenderPresent(renderer);
         }
