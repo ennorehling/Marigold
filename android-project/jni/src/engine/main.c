@@ -5,11 +5,41 @@
 #include <limits.h>
 #include <string.h>
 
+#define MAX_SCRIPT_LENGTH 32768
+#define MAX_PATH_LENGTH 64
+
 static int asset_loader(lua_State * L) {
-    SDL_Log("+++++ DEBUG %s:%d +++++", __FILE__, __LINE__);
-    const char * filename = lua_tostring(L, 1);
-    SDL_Log("asset_loader: %s", filename);
-    return 0;
+    const char * module = lua_tostring(L, 1);
+    char * buffer;
+    SDL_RWops * rw;
+    char filename[MAX_PATH_LENGTH];
+
+    //SDL_Log("+++++ LOADING %s +++++", module);
+    strcat(strcpy(filename, module), ".lua");
+    rw = SDL_RWFromFile(filename, "rb");
+    if (rw) {
+        //SDL_Log("+++++ OPENED %s +++++", filename);
+        void * buffer;
+        size_t sz, rd;
+        SDL_RWseek(rw, 0, RW_SEEK_END);
+        sz = SDL_RWtell(rw);
+        //SDL_Log("+++++ LOADING %u bytes from %s +++++", sz, filename);
+        buffer = malloc(sz);
+        SDL_RWseek(rw, 0, RW_SEEK_SET);
+        rd = SDL_RWread(rw, buffer, 1, sz);
+        //SDL_Log("+++++ LOADED %u bytes from %s +++++", rd, filename);
+        if (rd>0) {
+            luaL_loadbuffer(L, (const char *)buffer, sz, filename);
+            //SDL_Log("+++++ PARSED %u bytes from %s +++++", sz, filename);
+        }
+        SDL_FreeRW(rw);
+        free(buffer);
+    } else {
+        char error[MAX_PATH_LENGTH+32];
+        strcat(strcpy(error, "could not load "), filename);
+        lua_pushstring(L, error);
+    }
+    return 1;
 }
 
 static const char * getFilesDir(void) {
@@ -71,11 +101,11 @@ int SDL_main(int argc, char * argv[]) {
     lua_State * L = lua_open();
     const char * script = "main.lua";
 
-    SDL_Log("+++++ COMPILED ON %s AT %s +++++", __DATE__, __TIME__);
+    //SDL_Log("+++++ COMPILED ON %s AT %s +++++", __DATE__, __TIME__);
     load_libraries(L);
-    SDL_Log("+++++ LOAD LIBRARIES OK +++++");
+    //SDL_Log("+++++ LOAD LIBRARIES OK +++++");
     register_loader(L, getFilesDir());
-    SDL_Log("+++++ LOADER REGISTERED +++++");
+    //SDL_Log("+++++ LOADER REGISTERED +++++");
 
     lua_pushinteger(L, 42);
     lua_setglobal(L, "a");
@@ -83,20 +113,19 @@ int SDL_main(int argc, char * argv[]) {
     // luaL_loadstring(L, "a=42");
     luaL_loadstring(L, "require('main')");
     ret = lua_pcall(L, 0, LUA_MULTRET, 0);
-    SDL_Log("+++++ RETURN %d +++++", ret);
+    //SDL_Log("+++++ RETURN %d +++++", ret);
     if (ret) {
         const char * err = lua_tostring(L, -1);
-        SDL_Log("+++++ ERROR %s", err);
+        //SDL_Log("+++++ ERROR %s", err);
     }
-//    luaL_dofile(L, script);
 
-    SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
+    //SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
     lua_getglobal(L, "a");
-    SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
+    //SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
     a = lua_tointeger(L, 1);
-    SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
+    //SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
     lua_close(L);
-    SDL_Log("+++++ THE ULTIMATE ANSWER IS %d +++++", a);
+    //SDL_Log("+++++ THE ULTIMATE ANSWER IS %d +++++", a);
     SDL_Quit();
     return 0;
 }
