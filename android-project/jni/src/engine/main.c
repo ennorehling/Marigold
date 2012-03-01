@@ -96,6 +96,28 @@ static void register_loader(lua_State * L, const char * files_dir) {
     lua_pop(L, 1);
 }
 
+
+extern int tolua_SDL_wr_open(lua_State*);
+extern int tolua_SDL_surface_wr_open(lua_State*);
+extern int tolua_SDL_render_wr_open(lua_State*);
+extern int tolua_SDL_video_wr_open(lua_State*);
+extern int tolua_SDL_timer_wr_open(lua_State*);
+extern int tolua_SDL_keyboard_wr_open(lua_State*);
+extern int tolua_SDL_event_wr_open(lua_State*);
+extern int tolua_SDL_audio_wr_open(lua_State*);
+
+int DECLSPEC luaopen_LuaSDL2 (lua_State* L) {
+    tolua_SDL_wr_open(L);
+    tolua_SDL_surface_wr_open(L);
+    tolua_SDL_render_wr_open(L);
+    tolua_SDL_video_wr_open(L);
+    tolua_SDL_timer_wr_open(L);
+    tolua_SDL_keyboard_wr_open(L);
+    tolua_SDL_event_wr_open(L);
+    tolua_SDL_audio_wr_open(L);
+    return 0;
+};
+
 int SDL_main(int argc, char * argv[]) {
     int a = 23, ret;
     lua_State * L = lua_open();
@@ -103,6 +125,7 @@ int SDL_main(int argc, char * argv[]) {
 
     //SDL_Log("+++++ COMPILED ON %s AT %s +++++", __DATE__, __TIME__);
     load_libraries(L);
+    luaopen_LuaSDL2(L);
     //SDL_Log("+++++ LOAD LIBRARIES OK +++++");
     register_loader(L, getFilesDir());
     //SDL_Log("+++++ LOADER REGISTERED +++++");
@@ -113,19 +136,12 @@ int SDL_main(int argc, char * argv[]) {
     // luaL_loadstring(L, "a=42");
     luaL_loadstring(L, "require('main')");
     ret = lua_pcall(L, 0, LUA_MULTRET, 0);
-    //SDL_Log("+++++ RETURN %d +++++", ret);
+    SDL_Log("+++++ main pcall returned %d +++++", ret);
     if (ret) {
         const char * err = lua_tostring(L, -1);
-        //SDL_Log("+++++ ERROR %s", err);
+        SDL_Log("+++++ ERROR %s", err);
     }
 
-    //SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
-    lua_getglobal(L, "a");
-    //SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
-    a = lua_tointeger(L, 1);
-    //SDL_Log("+++++ DEBUG %s:%d +++++", __FUNCTION__, __LINE__);
     lua_close(L);
-    //SDL_Log("+++++ THE ULTIMATE ANSWER IS %d +++++", a);
-    SDL_Quit();
     return 0;
 }
