@@ -21,7 +21,7 @@
 #define NUM_OBJECTS	100
 
 static CommonState *state;
-static int num_objects;
+static int num_objects = NUM_OBJECTS;
 static SDL_bool cycle_color;
 static SDL_bool cycle_alpha;
 static int cycle_direction = 1;
@@ -192,7 +192,7 @@ DrawRects(SDL_Renderer * renderer)
 }
 
 int
-main(int argc, char *argv[])
+test_main(int argc, char *argv[])
 {
     int i, done;
     SDL_Event event;
@@ -295,5 +295,11 @@ main(int argc, char *argv[])
     }
     return 0;
 }
+
+#if 0
+int main(int argc, char *argv[]) {
+    return test_main(argc, argv);
+}
+#endif
 
 /* vi: set ts=4 sw=4 expandtab: */

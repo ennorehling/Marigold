@@ -1,18 +1,15 @@
 SDL_Init(SDL_INIT_EVERYTHING)
-local w = 640
-local h = 480
-local rect = SDL_CreateRect()
-rect.x = 0
-rect.y = 0
-rect.w = w
-rect.h = h
-local fullscreen = 0x80000000
-local window = SDL_CreateWindow("SDL 2.0 Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN)
-local screen = SDL_GetWindowSurface(window)
-local surface = SDL_ConvertSurface(screen, screen.format, SDL_RLEACCEL)
+local window = SDL_CreateWindow("SDL 2.0 Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, 0)
 local renderer = SDL_CreateRenderer(window, -1, 0)
-SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
-SDL_RenderClear(renderer)
-SDL_RenderPresent(renderer)
+color = 0
+while true do
+    color = color + 1
+    SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF)
+    SDL_RenderClear(renderer)
+    SDL_RenderPresent(renderer)
+    SDL_SetRenderDrawColor(renderer, color, 0, 0, 0xFF)
+    SDL_RenderClear(renderer)
+    SDL_RenderPresent(renderer)
+end
 SDL_Delay(2000)
 SDL_Quit()

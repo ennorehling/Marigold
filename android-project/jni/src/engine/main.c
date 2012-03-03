@@ -118,8 +118,40 @@ int DECLSPEC luaopen_LuaSDL2 (lua_State* L) {
     return 0;
 };
 
+extern int test_main(int argc, char *argv[]);
+extern void DrawRects(SDL_Renderer * renderer);
+
+void sdl_dummy(void) {
+    SDL_Init(SDL_INIT_EVERYTHING);
+    int w = 640;
+    int h = 480;
+    SDL_Window * window = SDL_CreateWindow("SDL 2.0 Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
+    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
+    SDL_Log("+++++ INIT DONE +++++");
+    SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
+    SDL_RenderClear(renderer);
+    DrawRects(renderer);
+    SDL_Log("+++++ PRESENT +++++");
+    SDL_RenderPresent(renderer);
+    SDL_Delay(2000);
+    SDL_Log("+++++ FINISHED +++++");
+    SDL_Quit();
+}
+
+void lua_main(lua_State * L) {
+    int ret;
+    // luaL_loadstring(L, "a=42");
+    luaL_loadstring(L, "require('main')");
+    ret = lua_pcall(L, 0, LUA_MULTRET, 0);
+    SDL_Log("+++++ main pcall returned %d +++++", ret);
+    if (ret) {
+        const char * err = lua_tostring(L, -1);
+        SDL_Log("+++++ ERROR %s", err);
+    }
+}
+
 int SDL_main(int argc, char * argv[]) {
-    int a = 23, ret;
+    int a = 23;
     lua_State * L = lua_open();
     const char * script = "main.lua";
 
@@ -132,15 +164,10 @@ int SDL_main(int argc, char * argv[]) {
 
     lua_pushinteger(L, 42);
     lua_setglobal(L, "a");
-
-    // luaL_loadstring(L, "a=42");
-    luaL_loadstring(L, "require('main')");
-    ret = lua_pcall(L, 0, LUA_MULTRET, 0);
-    SDL_Log("+++++ main pcall returned %d +++++", ret);
-    if (ret) {
-        const char * err = lua_tostring(L, -1);
-        SDL_Log("+++++ ERROR %s", err);
-    }
+    
+    lua_main(L);
+    // test_main(argc, argv);
+    // sdl_dummy();
 
     lua_close(L);
     return 0;
